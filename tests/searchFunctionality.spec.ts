@@ -34,7 +34,10 @@ test.describe("Udacity Catalog > Search Functionality :", () => {
     await commonLoc.searchButton.press('Enter');
     //clicked on skill dropdown
     await page.getByRole('button', { name: 'Skill' }).click();
-    await commonLoc.skillInputField.fill(constant.skillText);
+    await page.getByPlaceholder('Type to Search').click();
+    await commonLoc.skillInputField.click();
+    await commonfunctions.enterDetails(commonLoc.skillInputField,constant.skillText);
+    //await commonLoc.skillInputField.fill(constant.skillText);
     // (await commonfunctions.locateByRegionRole(constant.regionRole)).hover();
     
     await page.pause();
