@@ -1,0 +1,30 @@
+{
+  "name": "udacity-catalog-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "sideEffects": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:konikasanyal2/Udacity-Catalog-demo.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^22.9.0",
+    "browserstack-local": "^1.5.5",
+    "dotenv-flow": "4.1.0",
+    "chalk": "4.1.2"
+  }
+}
