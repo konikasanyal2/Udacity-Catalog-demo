@@ -3,4 +3,5 @@ export const constant = {
     searchText: "Testing",
     skillText: "Automation testing",
     regionRole: "Skill",
+    noResultVerbiage: "No Results Found",
 };
