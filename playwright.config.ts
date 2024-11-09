@@ -17,6 +17,7 @@ const config: PlaywrightTestConfig = {
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 1 : undefined,
   use: {
+    baseURL: "https://api.udacity.com/api/unified-catalog/",
     actionTimeout: 0,
     navigationTimeout: 60 * 1000,
     headless: false,
