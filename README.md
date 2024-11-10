@@ -30,7 +30,7 @@ Utilize playwright methods to validate UI result with API response
 
 **Expected Behaviour :** Then user should see a "No results found" message
 
-**Testing ALgo Used :** 
+**Testing ALGO Used :** 
 1. Navigate to Udacity Catalog page and perform Search functionality.
 2. Capture and store results in the uiResults property.
 3. Store the API response in the apiResults property.
