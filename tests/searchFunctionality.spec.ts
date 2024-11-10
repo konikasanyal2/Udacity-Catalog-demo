@@ -60,13 +60,17 @@ sortBy: "relevance"
    // Log the full response in a readable way (with indentation)
 let response = await (JSON.stringify(responseJson, null, 2));
 console.log(response);
+//Validating the post api response
 await expect(postAPIResponse.ok()).toBeTruthy();
 await expect(postAPIResponse.status()).toBe(200);
+//Checking the total number of articles available in UI based on the post request for search query
 let total_article = await commonLoc.article.count();///---this element is not counting the total number of article in the catalog page .. need to fix this
 await console.log(total_article);
+//if total articles in UI = 0, then user is displayed with "No Result Found"
    if( total_article == 0){
     await expect(commonLoc.noResult).toHaveText(constant.noResultVerbiage); 
    }
+   //If ariticle value more than 0 then it will validate the UI article title with api response title
     else {
       for(let i =1; i<=total_article;i++){
         let uiTitle = commonfunctions.fetchSkillTitle(i);
@@ -74,6 +78,7 @@ await console.log(total_article);
         let apiTitle = responseJson.hits[0]?.highlighted?.title?.value; //--- this is not fetching the title value from hits.highlighted.title in JSON object 
         console.log('Title received from UI : ',uiTitle);
         console.log('Title received from api : ', apiTitle);
+        //asserting UI title and api title
         await expect(uiTitle).toBe(apiTitle);
         console.log('Titles match:', apiTitle === uiTitle);
       }
