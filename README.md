@@ -1,4 +1,6 @@
 # Udacity-Catalog-demo
+**URL Used :** https://www.udacity.com/catalog
+
 **Objective**
 Create automated test scripts capable of driving both UI and API validation using Playwright with TypeScript.
 Link to Application for Testing : Udacity Catalog
