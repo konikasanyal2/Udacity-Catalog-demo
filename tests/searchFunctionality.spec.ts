@@ -39,7 +39,6 @@ test.describe("Udacity Catalog > Search Functionality :", () => {
     await commonLoc.skillInputField.fill(constant.skillText);
     await page.getByRole('button', { name: constant.skillText }).click();
    
-    //----*****-------******------******------*******-----need to execute post api response and validate the api response with ui response ----****----****----****----****
    //creating a POST request
     const postAPIResponse = await request.post('https://api.udacity.com/api/unified-catalog/search',{
     data :{
@@ -62,7 +61,7 @@ let response = await (JSON.stringify(responseJson, null, 2));
 console.log(response);
 await expect(postAPIResponse.ok()).toBeTruthy();
 await expect(postAPIResponse.status()).toBe(200);
-let total_article = await commonLoc.article.count();
+let total_article = await commonLoc.article.count();///---this element is not counting the total number of article in the catalog page .. need to fix this
 await console.log(total_article);
    if( total_article == 0){
     await expect(commonLoc.noResult).toHaveText(constant.noResultVerbiage); 
@@ -71,7 +70,7 @@ await console.log(total_article);
       for(let i =1; i<=total_article;i++){
         let uiTitle = commonfunctions.fetchSkillTitle(i);
        // Extract the title from the API response
-        let apiTitle = responseJson.results[0]?.highlighted?.title?.value;
+        let apiTitle = responseJson.hits[0]?.highlighted?.title?.value; //--- this is not fetching the title value from hits.highlighted.title in JSON object 
         console.log('Title received from UI : ',uiTitle);
         console.log('Title received from api : ', apiTitle);
         await expect(uiTitle).toBe(apiTitle);
