@@ -1,11 +1,12 @@
 import { Browserstack, expect, test } from "../src/base/fixture";
 import { isBstack } from "../src/utils/env";
 import { constant } from "../src/data/constant";
+import { type } from "os";
 
 test.describe.configure({ mode: "parallel" });
 
 test.describe("Udacity Catalog > Search Functionality :", () => {
-  test.beforeEach(async ({ commonfunctions, page,  }) => {
+  test.beforeEach(async ({ commonfunctions, page, }) => {
     //Navigate to  udacity catalog page
     await commonfunctions.navigateTo(
       constant.udacltyUrl,
@@ -14,8 +15,8 @@ test.describe("Udacity Catalog > Search Functionality :", () => {
     if (isBstack) Browserstack.logSessionDetails(page);
   });
 
-  test.afterEach(async ({ page,  }) => {
-   
+  test.afterEach(async ({ page, }) => {
+
     await page.close();
   });
 
@@ -29,60 +30,64 @@ test.describe("Udacity Catalog > Search Functionality :", () => {
     //waiting for catalog page to load successfully
     await expect(commonLoc.udacitylogo).toBeVisible();
     //checked for search element on the top header and searched "Testing"
-    await commonLoc.searchButton.isEnabled();
+    await commonLoc.searchButton.waitFor({state: 'visible'});
+    await expect(commonLoc.searchButton).toBeEnabled();
     await commonLoc.searchButton.click();
-    await commonfunctions.enterDetails(commonLoc.searchButton,constant.searchText);
-    await commonLoc.searchButton.press('Enter');
+    await commonfunctions.enterDetails(commonLoc.searchInputBox, constant.searchText);
+    await commonLoc.searchInputBox.press('Enter');
+    await expect(commonLoc.serchResultheading).toBeVisible();
+
     //clicked on skill dropdown
     await page.getByRole('button', { name: 'Skill' }).click();
+    await  commonLoc.skillInput.waitFor({state:'visible'});
     await commonLoc.skillInput.click();
-    //const skilltext = constant.skillText.split(","); If skill text has more test data
+    await  commonLoc.skillInputField.waitFor({state:'visible'});
     await commonLoc.skillInputField.fill(constant.skillText);
+    await page.getByRole('button', { name: constant.skillText }).waitFor({state:'visible'});
     await page.getByRole('button', { name: constant.skillText }).click();
-   
-   //creating a POST request
-    const postAPIResponse = await request.post('https://api.udacity.com/api/unified-catalog/search',{
-    data :{
-      difficulties : [],
-durations : [],
-enrolledOnly : false,
-keys : [],
-page : 0,
-pageSize : 24,
-schools : [],
-searchText: "Testing",
-semanticTypes: [],
-skills: ["taxonomy:4c61e76f-1bc5-4088-97ee-9e4756fafece"],
-sortBy: "relevance"
-    },
-   })
-   const responseJson = await JSON.parse(await postAPIResponse.text());
-   // Log the full response in a readable way (with indentation)
-let response = await (JSON.stringify(responseJson, null, 2));
-console.log(response);
-//Validating the post api response
-await expect(postAPIResponse.ok()).toBeTruthy();
-await expect(postAPIResponse.status()).toBe(200);
-//Checking the total number of articles available in UI based on the post request for search query
-let total_article = await commonLoc.article.count();///---this element is not counting the total number of article in the catalog page .. need to fix this
-await console.log(total_article);
-//if total articles in UI = 0, then user is displayed with "No Result Found"
-   if( total_article == 0){
-    await expect(commonLoc.noResult).toHaveText(constant.noResultVerbiage); 
-   }
-   //If ariticle value more than 0 then it will validate the UI article title with api response title
+
+    //----*****-------******------******------*******-----need to execute post api response and validate the api response with ui response ----****----****----****----****
+    //creating a POST request
+    const postAPIResponse = await request.post('https://api.udacity.com/api/unified-catalog/search', {
+      data: {
+        difficulties: [],
+        durations: [],
+        enrolledOnly: false,
+        keys: [],
+        page: 0,
+        pageSize: 24,
+        schools: [],
+        searchText: "Testing",
+        semanticTypes: [],
+        skills: ["taxonomy:4c61e76f-1bc5-4088-97ee-9e4756fafece"],
+        sortBy: "relevance"
+      },
+      headers: {
+        'content-type' : 'application/json',
+     }
+    });
+    const responseJson = JSON.parse((await postAPIResponse.body()).toString());
+    // Log the full response in a readable way (with indentation)
+    await expect(postAPIResponse.ok()).toBeTruthy();
+    await expect(postAPIResponse.status()).toBe(200);
+    await expect(commonLoc.article.first()).toBeVisible();
+    let total_article = await (await commonLoc.article.all()).length
+    if (total_article == 0) {
+      await expect(commonLoc.noResult).toHaveText(constant.noResultVerbiage);
+    }
     else {
-      for(let i =1; i<=total_article;i++){
-        let uiTitle = commonfunctions.fetchSkillTitle(i);
-       // Extract the title from the API response
-        let apiTitle = responseJson.hits[0]?.highlighted?.title?.value; //--- this is not fetching the title value from hits.highlighted.title in JSON object 
-        console.log('Title received from UI : ',uiTitle);
-        console.log('Title received from api : ', apiTitle);
-        //asserting UI title and api title
-        await expect(uiTitle).toBe(apiTitle);
-        console.log('Titles match:', apiTitle === uiTitle);
+      var apiTitle: string[];
+      apiTitle = [];  
+      var UiTitle: string[];
+      UiTitle = [];  
+      for (let i = 1; i <= total_article; i++) {
+        UiTitle.push(await commonfunctions.fetchSkillTitle(i));
       }
-      
+      for (let i = 0; i < total_article; i++) {
+        // Extract the title from the API response
+        apiTitle.push(await responseJson.searchResult.hits[i].title.toString());
+      }
+      await expect(commonfunctions.compareArrays(apiTitle,UiTitle)).toBeTruthy();
     }
   });
 });

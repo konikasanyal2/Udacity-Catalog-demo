@@ -21,7 +21,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 0,
     navigationTimeout: 60 * 1000,
     headless: false,
-    trace: "off",
+    trace: "on",
     screenshot: "only-on-failure",
     acceptDownloads: true,
   },
