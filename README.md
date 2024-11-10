@@ -21,6 +21,14 @@ Utilize playwright methods to validate UI result with API response
 
 **Expected Behaviour :** Then the UI results should match the API results
 
+**Testing ALGO Used :** 
+1. Navigate to Udacity Catalog page and perform Search functionality.
+2. Capture and store results in the uiResults property.
+3. Store the API response in the apiResults property.
+4. Implement assertions to compare the number of results and details (titles, descriptions) from uiResults and apiResults.
+
+**Expected :** Use assertions to check if each UI result corresponds correctly to the API result.
+
 **Negative Test Case**
 
 **Scenario:** Invalid Search with No Results
@@ -33,11 +41,8 @@ Utilize playwright methods to validate UI result with API response
 
 **Testing ALGO Used :** 
 1. Navigate to Udacity Catalog page and perform Search functionality.
-2. Capture and store results in the uiResults property.
-3. Store the API response in the apiResults property.
-4. Implement assertions to compare the number of results and details (titles, descriptions) from uiResults and apiResults.
 
-**Expected :** Use assertions to check if each UI result corresponds correctly to the API result.
+**Expected :** User should be displayed with "No Result Found" Verbiage in UI
 
 **FrameWork Description :**
 
