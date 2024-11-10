@@ -26,6 +26,7 @@ Utilize playwright methods to validate UI result with API response
 **Scenario:** Invalid Search with No Results
 
 1.Given the application is loaded successfully 
+
 2.When user search for "NonExistentTerm"
 
 **Expected Behaviour :** Then user should see a "No results found" message
