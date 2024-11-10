@@ -4,11 +4,7 @@ import { expect } from "@playwright/test";
 import { isBstack } from "../utils/env";
 import { CommonFunctions } from "../page/common/funtions";
 import { CommonLocators } from "../page/common/locators";
-// import type { MockServiceWorker } from "playwright-msw";
-// import { createWorkerFixture } from "playwright-msw";
-// import { handlers } from "../../../src/mocks/handlers";
 import * as BrowserStackLocal from "browserstack-local";
-// import VPLoginPage from "../page/vpLoginPage";
 
 const bsLocal = new BrowserStackLocal.Local();
 const BS_LOCAL_ARGS = {

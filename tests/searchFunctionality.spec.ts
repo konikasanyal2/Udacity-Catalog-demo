@@ -36,6 +36,7 @@ test.describe("Udacity Catalog > Search Functionality :", () => {
     //clicked on skill dropdown
     await page.getByRole('button', { name: 'Skill' }).click();
     await commonLoc.skillInput.click();
+    //const skilltext = constant.skillText.split(","); If skill text has more test data
     await commonLoc.skillInputField.fill(constant.skillText);
     await page.getByRole('button', { name: constant.skillText }).click();
    
