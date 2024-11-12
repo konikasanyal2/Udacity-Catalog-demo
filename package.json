@@ -27,5 +27,8 @@
     "chalk": "4.1.2",
     "dotenv-flow": "4.1.0",
     "prettier": "3.3.3"
+  },
+  "dependencies": {
+    "playwright": "^1.48.2"
   }
 }
